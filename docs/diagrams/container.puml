@@ -1,0 +1,24 @@
+@startuml
+!includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+
+LAYOUT_LEFT_RIGHT()
+
+Person(client, "Клиент", "Посетитель лендинга")
+Person(admin, "Администратор")
+
+System_Boundary(sys, "Law ERP - Application System") {
+  Container(api, "API", "ASP.NET Core Web API", "REST API для приёма и обработки заявок, CRUD")
+  Container(auth, "Auth Service", "ASP.NET Core Identity + JWT", "Управление логином / выдача токенов")
+  ContainerDb(db, "PostgreSQL", "Relational Database", "Хранение заявок и пользователей")
+}
+
+System_Ext(landing, "Landing Page", "HTML/CSS/JS", "Форма заявки")
+Rel(client, landing, "Заполняет форму", "HTTPS")
+Rel(landing, api, "POST /applications", "HTTPS")
+Rel(admin, auth, "POST /auth/login", "HTTPS")
+Rel(admin, api, "GET / PATCH / DELETE заявок", "HTTPS")
+Rel(api, db, "Сохраняет / Читает данные", "SQL")
+Rel(auth, db, "Читает пользователей", "SQL")
+
+SHOW_LEGEND()
+@enduml

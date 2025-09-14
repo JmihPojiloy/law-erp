@@ -1,0 +1,17 @@
+@startuml
+!includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Context.puml
+
+LAYOUT_LEFT_RIGHT()
+
+Person(client, "Клиент", "Посетитель лендинга, оставляет заявку")
+Person(admin, "Администратор", "Обрабатывает заявки")
+
+System_Ext(landing, "Landing Page", "Статический сайт/формы", "Форма заявки, отправка через API")
+System(system, "Law ERP Application Service", "ASP.NET Core Web API", "API сервис для хранения и обработки заявок")
+
+Rel(client, landing, "Заполняет форму", "HTTPS")
+Rel(landing, system, "POST /applications", "HTTPS")
+Rel(admin, system, "Получает / обновляет / удаляет заявки", "HTTPS")
+
+SHOW_LEGEND()
+@enduml
